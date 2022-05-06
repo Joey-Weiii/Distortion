@@ -42,7 +42,7 @@ parameters(*this, nullptr, juce::Identifier("APVT"),
                        30.0f,
                        0.01f),         // min, max,step
                     0.0f),        // default value
-       }),waveViewer(1),analyzerComponent()
+       }),waveViewer_in(1), waveViewer_out(1),analyzerComponent()
 
 {
     // knob values
@@ -54,10 +54,10 @@ parameters(*this, nullptr, juce::Identifier("APVT"),
     previousInputGain  = *inputGainParameter ;
 
     // WaveViewer
-    waveViewer.setRepaintRate(30);
-    waveViewer.setBufferSize(256);
-
-    // SpcetrumAnalyzer
+    waveViewer_in.setRepaintRate(30);
+    waveViewer_in.setBufferSize(256);
+    waveViewer_out.setRepaintRate(30);
+    waveViewer_out.setBufferSize(256);
 
 }
 
@@ -80,6 +80,11 @@ void DistortionAudioProcessor::prepareToPlay (double sampleRate, int numSamples)
     std::cout << "       samplesPerBlock: " << numSamples << std::endl;
     std::cout << " totalNumInputChannels: " << numInputChannels << std::endl;
     std::cout << "========================" << std::endl;
+    // set info for analyzer
+    
+    info.numSamples = numSamples;
+    info.startSample = 0;
+
 
     // spec for filter
     juce::dsp::ProcessSpec spec;
@@ -103,16 +108,6 @@ void DistortionAudioProcessor::prepareToPlay (double sampleRate, int numSamples)
                dsp::Convolution::Normalise::no);
      myfilter.prepare(spec); /* Must be called before first calling process */
     
-
-
-    // -- Method 2 - Use FIR -- //
-//    dsp::FIR::Coefficients<float>::Ptr coeffPtr = new dsp::FIR::Coefficients<float> (
-//                    coeff.getRawDataPointer(),  coeff.size());
-//    myfilter.reset(); /* Resets the processing pipeline ready to start a new stream of data */
-//    myfilter.state = *coeffPtr;
-//    myfilter.prepare(spec); /* Must be called before first calling process */
-
-    
     // -- clear caches -- //
     // clear gain cache
     previousOutputGain = *outputGainParameter + 0.0;
@@ -130,11 +125,11 @@ void DistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     
     int numSamples = buffer.getNumSamples();
     auto begin = std::chrono::high_resolution_clock::now();
-    
+
+
     // Main DSP procssing block
     if (numSamples > 0)
     {
-        
         // We need reseting here beacuse DAWs usually sent testing signal after preparetoplay()
         if (previousNumSamples != numSamples)
         {
@@ -143,14 +138,38 @@ void DistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         
         // ===== Start Coding ===== //
         // some DSP stuff
-        
+        auto currentInputGain = getInputGain();
+        waveViewer_in.pushBuffer(buffer);
         ApplyInputGain(buffer);
-        waveViewer.pushBuffer(buffer);
+        //if (distrtion_activate) 
+        //{
+        //    for (int channel = 0; channel < numInputChannels; ++channel)
+        //    {
+        //        auto* channelData = buffer.getWritePointer(channel);
 
-        AudioSourceChannelInfo info;
+        //        // tanh
+        //        if (distortionType == 1)
+        //        {
+        //            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        //            {
+        //                channelData[sample] = tanh(channelData[sample]);
+        //            }
+        //        }
+        //        if (distortionType == 2)
+        //        //soft clipping
+        //        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        //        {
+        //            int sign = (channelData[sample] > 0) ? 1 : 0;
+        //            channelData[sample] = sign * (1 - exp(-1 * abs(channelData[sample] * juce::Decibels::decibelsToGain(currentInputGain))));
+
+        //        }
+
+        //    }
+
+        //}
+            
+
         info.buffer = &buffer;
-        info.numSamples = numSamples;
-        info.startSample = 0;
 
         analyzerComponent.getNextAudioBlock(info);
 
@@ -160,6 +179,8 @@ void DistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 
 
         ApplyOutputGain(buffer);
+
+        waveViewer_out.pushBuffer(buffer);
         // ===== End Coding ===== //
         
     }
@@ -270,4 +291,27 @@ void DistortionAudioProcessor::updateRecord(float newValue)
     bufferTimeRecords[recordIndex] = newValue;
     ++recordIndex;
     recordIndex %= 100;
+}
+
+
+// Distortion functions
+int DistortionAudioProcessor::getDistortionType()
+{
+    return distortionType;
+}
+
+void DistortionAudioProcessor::changeDistortionState()
+{
+    distrtion_activate = !distrtion_activate;
+}
+
+
+bool DistortionAudioProcessor::isDistortionActivate()
+{
+    return distrtion_activate;
+}
+
+void DistortionAudioProcessor::setDistortionType(int x)
+{
+    distortionType = x;
 }

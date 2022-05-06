@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "UI/ButtonComponent.h"
 #include <string>
 
 using namespace juce;
@@ -50,6 +51,9 @@ private:
     // attachments
     std::unique_ptr<SliderAttachment> inputGainAttachment;
     std::unique_ptr<SliderAttachment> outputGainAttachment;
+    
+    // distortion button
+    ButtonComponent buttonComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DistortionAudioProcessorEditor)
 };

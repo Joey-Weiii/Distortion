@@ -10,7 +10,8 @@
 
 #include <JuceHeader.h>
 #include <array>
-#include "AnalyzerComponent.cpp"
+#include "UI/AnalyzerComponent.cpp"
+
 
 using namespace juce;
 //==============================================================================
@@ -80,11 +81,16 @@ public:
     int recordIndex = 0;
 
     // Waveform viewer
-    juce::AudioVisualiserComponent waveViewer;
+    juce::AudioVisualiserComponent waveViewer_in, waveViewer_out;
 
     // Spectrum Analyzer
     AnalyzerComponent analyzerComponent;
 
+    // Distortion 
+    int getDistortionType();
+    void setDistortionType(int x);
+    void changeDistortionState();
+    bool isDistortionActivate();
 private:
     //==============================================================================
     enum
@@ -97,9 +103,7 @@ private:
     using Filter = juce::dsp::IIR::Filter<float>;
     using FilterCoefs = juce::dsp::IIR::Coefficients<float>;
 
-    dsp::ProcessorChain<  dsp::ProcessorDuplicator<Filter, FilterCoefs>,
-    dsp::Gain<float>, dsp::WaveShaper<float>, dsp::Gain<float>
-    > processorChain;
+    AudioSourceChannelInfo info;
 
     AudioProcessorValueTreeState parameters;
 
@@ -183,6 +187,9 @@ private:
     std::atomic<float>* inputGainParameter  = nullptr;
     std::atomic<float>* outputGainParameter = nullptr;
     
+    // Distortion variables
+    int distortionType=1;
+    bool distrtion_activate = true;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DistortionAudioProcessor)
 };
