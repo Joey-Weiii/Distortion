@@ -11,7 +11,7 @@
 
 //==============================================================================
 DistortionAudioProcessorEditor::DistortionAudioProcessorEditor (DistortionAudioProcessor& p,  AudioProcessorValueTreeState& vts)
-    : AudioProcessorEditor (&p), processor (p), valueTreeState (vts), buttonComponent(processor)
+    : AudioProcessorEditor (&p), processor (p), valueTreeState (vts) , distFunctionComponent(processor)
 {   
 
      // input gain
@@ -51,9 +51,22 @@ DistortionAudioProcessorEditor::DistortionAudioProcessorEditor (DistortionAudioP
     
     // SpectrumAnalyzer
     addAndMakeVisible(processor.analyzerComponent);
-    
-    // DistortionButton
-    addAndMakeVisible(buttonComponent);
+
+    //Button of 3 function
+    addAndMakeVisible(tanhButton);
+    tanhButton.addListener(this);
+    tanhButton.setLookAndFeel(&tanhButtonLook);
+
+    addAndMakeVisible(softButton);
+    softButton.addListener(this);
+    softButton.setLookAndFeel(&softButtonLook);
+
+    addAndMakeVisible(hardButton);
+    hardButton.addListener(this);
+    hardButton.setLookAndFeel(&hardButtonLook);
+
+    //FunctionComponent
+    addAndMakeVisible(distFunctionComponent);
 
     setSize (1000, 1000);
     startTimerHz (10);
@@ -62,6 +75,9 @@ DistortionAudioProcessorEditor::DistortionAudioProcessorEditor (DistortionAudioP
 
 DistortionAudioProcessorEditor::~DistortionAudioProcessorEditor()
 {
+    tanhButton.setLookAndFeel(nullptr);
+    softButton.setLookAndFeel(nullptr);
+    hardButton.setLookAndFeel(nullptr);
 }
 
 //==============================================================================
@@ -71,29 +87,48 @@ void DistortionAudioProcessorEditor::paint (juce::Graphics& g)
     auto bounds = getLocalBounds();
 
     // Spectrum area
-    auto spectrumArea = bounds.removeFromTop(bounds.getHeight() * 0.2);
+    auto spectrumArea = Rectangle<int>(0,0,1000,150);
     processor.analyzerComponent.setBounds(spectrumArea);
    
-    // Waveform area 
-    auto waveform_in_Area = bounds.removeFromTop(bounds.getHeight() * 0.3);
+    //// Waveform area 
+    auto waveform_in_Area = Rectangle<int>(0, 150, 1000, 150);
     processor.waveViewer_in.setBounds(waveform_in_Area);
-    auto waveform_out_Area = bounds.removeFromTop(bounds.getHeight() * 0.4);
+    auto waveform_out_Area = Rectangle<int>(0, 300, 1000, 150);
     processor.waveViewer_out.setBounds(waveform_out_Area);
-    // Gains Area
-    auto inputGainArea = bounds.removeFromLeft(bounds.getWidth()*0.33);
-    auto outputGainArea = bounds.removeFromLeft(bounds.getWidth()*0.33);
-    
-     // input gain
-    inputGainSlider.setBounds(bounds.getWidth()*0.15,800,150,150);
-    inputGainLabel.setBounds(bounds.getWidth()*0.15, 770, 80, 30);
+
+    // input gain
+    auto inputGainArea =  Rectangle<int>(bounds.getRight()-1000, bounds.getBottom() - 200, 100, 100);
+    auto inputLabelArea = Rectangle<int>(bounds.getRight() -1000, bounds.getBottom() -230, 80, 30);
+    inputGainSlider.setBounds(inputGainArea);
+    inputGainLabel.setBounds(inputLabelArea);
     
     // output gain
-    outputGainSlider.setBounds(bounds.getWidth() * 0.5, 800, 150, 150);
-    outputGainLabel.setBounds(bounds.getWidth() * 0.5, 770, 80, 30);
+    auto outputGainArea = Rectangle<int>(bounds.getRight() - 900, bounds.getBottom() - 200, 100, 100);
+    auto outputLabelArea = Rectangle<int>(bounds.getRight() -900, bounds.getBottom() - 230, 80, 30);
+    outputGainSlider.setBounds(outputGainArea);
+    outputGainLabel.setBounds(outputLabelArea);
 
     // --- monitor buffer time--- //
-    auto buffetTimeArea = bounds.removeFromRight(bounds.getWidth() * 0.35);
-    bufferTimeLabel.setBounds (buffetTimeArea.removeFromTop(bounds.getHeight() * 0.75));
+    auto buffetTimeArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom()-100 , 100, 100);
+    bufferTimeLabel.setBounds (buffetTimeArea);
+
+    // distortion functions
+    auto functionArea = Rectangle<int>(bounds.getRight() - 500, bounds.getBottom() - 500, 600, 600);
+    distFunctionComponent.setBounds(functionArea);
+
+    // tanh_btn
+    auto tanhBtnArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom() - 300, 100, 50);
+    tanhButton.setBounds(tanhBtnArea);
+
+    // soft_btn
+    auto softBtnArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom() - 250, 100, 50);
+    softButton.setBounds(softBtnArea);
+
+    // hard_btn
+    auto hardBtnArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom() - 200, 100, 50);
+    hardButton.setBounds(hardBtnArea);
+
+
 
 }
 
@@ -117,3 +152,53 @@ void DistortionAudioProcessorEditor::timerCallback()
     
 }
 
+
+void DistortionAudioProcessorEditor::buttonClicked(Button* button)
+{
+    if (button == &tanhButton)
+    {
+        if (tanhButtonLook.getStage() == 0)
+        {
+            tanhButtonLook.setStage(1);
+            softButtonLook.setStage(0);
+            hardButtonLook.setStage(0);
+        }
+        else
+        {
+            tanhButtonLook.setStage(0);
+            processor.setDistortionType(0);
+        }
+    }
+
+    if (button == &softButton)
+    {
+        if (softButtonLook.getStage() == 0)
+        {
+            tanhButtonLook.setStage(0);
+            softButtonLook.setStage(1);
+            hardButtonLook.setStage(0);
+        }
+        else
+        {
+            softButtonLook.setStage(0);
+            processor.setDistortionType(0);
+        }
+    }
+
+    if (button == &hardButton)
+    {
+        if (hardButtonLook.getStage() == 0)
+        {
+            tanhButtonLook.setStage(0);
+            softButtonLook.setStage(0);
+            hardButtonLook.setStage(1);
+        }
+        else
+        {
+            hardButtonLook.setStage(0);
+            processor.setDistortionType(0);
+        }
+    }
+    processor.updateDistortionType();
+
+}

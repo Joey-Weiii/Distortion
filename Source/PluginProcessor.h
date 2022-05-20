@@ -13,6 +13,7 @@
 #include "UI/AnalyzerComponent.cpp"
 
 
+
 using namespace juce;
 //==============================================================================
 /**
@@ -86,11 +87,13 @@ public:
     // Spectrum Analyzer
     AnalyzerComponent analyzerComponent;
 
-    // Distortion 
+    // Distortion functions
+
     int getDistortionType();
     void setDistortionType(int x);
-    void changeDistortionState();
-    bool isDistortionActivate();
+    void updateDistortionType();
+
+
 private:
     //==============================================================================
     enum
@@ -104,7 +107,6 @@ private:
     using FilterCoefs = juce::dsp::IIR::Coefficients<float>;
 
     AudioSourceChannelInfo info;
-
     AudioProcessorValueTreeState parameters;
 
     // filter
@@ -188,8 +190,9 @@ private:
     std::atomic<float>* outputGainParameter = nullptr;
     
     // Distortion variables
-    int distortionType=1;
-    bool distrtion_activate = true;
+    int distortionType=0;
+    dsp::WaveShaper<float> distortion;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DistortionAudioProcessor)
 };

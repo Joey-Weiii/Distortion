@@ -10,14 +10,15 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "UI/ButtonComponent.h"
+#include "UI/DistFunctionComponent.h"
+#include "UI/ButtonLook.h"
 #include <string>
 
 using namespace juce;
 
 typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 
-class DistortionAudioProcessorEditor  : public juce::AudioProcessorEditor , public Timer
+class DistortionAudioProcessorEditor  : public juce::AudioProcessorEditor , public Timer, public Button::Listener
 {
 public:
     DistortionAudioProcessorEditor (DistortionAudioProcessor&,AudioProcessorValueTreeState& vts);
@@ -28,6 +29,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void timerCallback() override;
+   void buttonClicked(Button* button) override;
+
 
 private:
 
@@ -48,12 +51,15 @@ private:
     // -- monitor -- //
     Label bufferTimeLabel;
 
+
+    // button of 3 function
+    TextButton tanhButton{ "" },softButton{ "" },hardButton{ "" };
+    ButtonLook tanhButtonLook, softButtonLook, hardButtonLook;
+
     // attachments
     std::unique_ptr<SliderAttachment> inputGainAttachment;
     std::unique_ptr<SliderAttachment> outputGainAttachment;
     
-    // distortion button
-    ButtonComponent buttonComponent;
-
+    DistFunctionComponent distFunctionComponent;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DistortionAudioProcessorEditor)
 };

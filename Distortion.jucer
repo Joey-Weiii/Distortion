@@ -4,19 +4,23 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="pbHNlV" name="Distortion">
     <GROUP id="{F278AE2E-B3C5-2D58-D14D-C64CD64594FE}" name="Image">
-      <FILE id="IqafmL" name="auto_gain_btn_off.png" compile="0" resource="1"
-            file="Image/auto_gain_btn_off.png"/>
-      <FILE id="gsFuTW" name="auto_gain_btn_on.png" compile="0" resource="1"
-            file="Image/auto_gain_btn_on.png"/>
+      <FILE id="T9mJhL" name="btn_off.png" compile="0" resource="1" file="Image/btn_off.png"/>
+      <FILE id="hFYqRB" name="btn_on.png" compile="0" resource="1" file="Image/btn_on.png"/>
+      <FILE id="RAKDNJ" name="hard.png" compile="0" resource="1" file="Image/hard.png"/>
+      <FILE id="dj4dnX" name="no.png" compile="0" resource="1" file="Image/no.png"/>
+      <FILE id="AaUio3" name="soft.png" compile="0" resource="1" file="Image/soft.png"/>
+      <FILE id="zoCHio" name="tanh.png" compile="0" resource="1" file="Image/tanh.png"/>
     </GROUP>
     <GROUP id="{EF98148C-7007-1171-70F5-75B2EB07B73E}" name="Source">
       <GROUP id="{C41CC221-F3C5-0B82-4BFF-6B83E4BA7192}" name="UI">
         <FILE id="Jf24l2" name="AnalyzerComponent.cpp" compile="1" resource="0"
               file="Source/UI/AnalyzerComponent.cpp"/>
-        <FILE id="RTx0xa" name="ButtonComponent.cpp" compile="1" resource="0"
-              file="Source/UI/ButtonComponent.cpp"/>
-        <FILE id="Kum2Kk" name="ButtonComponent.h" compile="0" resource="0"
-              file="Source/UI/ButtonComponent.h"/>
+        <FILE id="lh07FE" name="ButtonLook.cpp" compile="1" resource="0" file="Source/UI/ButtonLook.cpp"/>
+        <FILE id="WGMPxB" name="ButtonLook.h" compile="0" resource="0" file="Source/UI/ButtonLook.h"/>
+        <FILE id="h9zKXl" name="DistFunctionComponent.cpp" compile="1" resource="0"
+              file="Source/UI/DistFunctionComponent.cpp"/>
+        <FILE id="xck7Ym" name="DistFunctionComponent.h" compile="0" resource="0"
+              file="Source/UI/DistFunctionComponent.h"/>
       </GROUP>
       <FILE id="P4mcW5" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

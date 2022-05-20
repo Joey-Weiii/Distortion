@@ -92,7 +92,6 @@ struct AnalyzerComponent : public Timer,
 
     void drawNextFrameOfSpectrum()
     {
-
         // first apply a windowing function to our data
         window.multiplyWithWindowingTable(fftData, fftSize);      
 

@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include <math.h>
 
+using namespace juce;
 //==============================================================================
 DistortionAudioProcessor::DistortionAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -59,6 +60,8 @@ parameters(*this, nullptr, juce::Identifier("APVT"),
     waveViewer_out.setRepaintRate(30);
     waveViewer_out.setBufferSize(256);
 
+    //distortion function
+    distortion.functionToUse = [](float x) { return x; };
 }
 
 DistortionAudioProcessor::~DistortionAudioProcessor()
@@ -95,6 +98,7 @@ void DistortionAudioProcessor::prepareToPlay (double sampleRate, int numSamples)
     std::cout << " > Filter Size: " << coeff.size() << std::endl;
     
     // -- Method 1 - Use Convolution -- //
+    
     coeffBuffer = AudioBuffer<float>(1, (int) coeff.size());     /* Initialize the buffer */
     coeffBuffer.copyFrom(0, 0, coeff.data(), (int) coeff.size()); /* Vector to buffer */
     // coeffBuffer.reverse(0, 0, convInSize); /* Call this line when load params from pytorch */
@@ -107,12 +111,15 @@ void DistortionAudioProcessor::prepareToPlay (double sampleRate, int numSamples)
                dsp::Convolution::Trim::no,
                dsp::Convolution::Normalise::no);
      myfilter.prepare(spec); /* Must be called before first calling process */
-    
+     
     // -- clear caches -- //
     // clear gain cache
     previousOutputGain = *outputGainParameter + 0.0;
     previousInputGain  = *inputGainParameter  + 0.0;
     
+    // distortion function
+    distortion.prepare(spec);
+
     // clear bufferTimeRecords
     memset(bufferTimeRecords, 0, sizeof(bufferTimeRecords));
     recordIndex = 0;
@@ -138,48 +145,21 @@ void DistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         
         // ===== Start Coding ===== //
         // some DSP stuff
-        auto currentInputGain = getInputGain();
+
         waveViewer_in.pushBuffer(buffer);
         ApplyInputGain(buffer);
-        //if (distrtion_activate) 
-        //{
-        //    for (int channel = 0; channel < numInputChannels; ++channel)
-        //    {
-        //        auto* channelData = buffer.getWritePointer(channel);
+        //distortion funciton
+        juce::dsp::AudioBlock<float> block(buffer);
+        dsp::ProcessContextReplacing<float> context(block);
+        distortion.process(context);
 
-        //        // tanh
-        //        if (distortionType == 1)
-        //        {
-        //            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
-        //            {
-        //                channelData[sample] = tanh(channelData[sample]);
-        //            }
-        //        }
-        //        if (distortionType == 2)
-        //        //soft clipping
-        //        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
-        //        {
-        //            int sign = (channelData[sample] > 0) ? 1 : 0;
-        //            channelData[sample] = sign * (1 - exp(-1 * abs(channelData[sample] * juce::Decibels::decibelsToGain(currentInputGain))));
-
-        //        }
-
-        //    }
-
-        //}
-            
+        //juce::dsp::ProcessContextReplacing<float> context(block);
+        //myfilter.process(context);
 
         info.buffer = &buffer;
-
         analyzerComponent.getNextAudioBlock(info);
 
-        juce::dsp::AudioBlock<float> block(buffer);
-        juce::dsp::ProcessContextReplacing<float> context(block);
-        myfilter.process(context);
-
-
         ApplyOutputGain(buffer);
-
         waveViewer_out.pushBuffer(buffer);
         // ===== End Coding ===== //
         
@@ -300,18 +280,38 @@ int DistortionAudioProcessor::getDistortionType()
     return distortionType;
 }
 
-void DistortionAudioProcessor::changeDistortionState()
-{
-    distrtion_activate = !distrtion_activate;
-}
-
-
-bool DistortionAudioProcessor::isDistortionActivate()
-{
-    return distrtion_activate;
-}
 
 void DistortionAudioProcessor::setDistortionType(int x)
 {
     distortionType = x;
+}
+
+
+void DistortionAudioProcessor::updateDistortionType()
+{
+    // 0 : no distortion
+    if(distortionType==0)
+    {
+        distortion.functionToUse = [](float x) { return x; };
+    }
+    // 1 : tanh
+    else if (distortionType == 1)
+    {
+        distortion.functionToUse = [](float x) { return tanh(x); };
+    }
+    // 2 : soft clipping
+    else if (distortionType == 2)
+    {
+        distortion.functionToUse = [](float x) 
+        { 
+            int sign = (x > 0) ? 1 : -1;
+            x= sign * (1 - exp(-1 * abs(x)));
+            return x; 
+        };
+    }
+    // 3 : hard clipping
+    else if (distortionType == 3)
+    {
+        distortion.functionToUse = [](float x) { return jlimit<float>(-0.7f, 0.7f, x); };
+    }
 }
