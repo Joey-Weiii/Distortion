@@ -57,10 +57,13 @@ DistFunctionComponent::~DistFunctionComponent()
 void DistFunctionComponent::paint(Graphics&g)
 {
     auto bounds = getLocalBounds();
-    g.setColour(Colour((153,153,153,0.6)));
-    auto functionArea = Rectangle<int>(bounds.getRight() - 600, bounds.getBottom() - 380, 200, 200);
-    g.fillRoundedRectangle(functionArea.toFloat(), 2.f);
 
+    g.setColour(Colours::grey);
+    //g.setColour(Colour((255, 255, 255, 0.6)));
+    //g.fillAll(Colours::antiquewhite);
+    auto functionArea = Rectangle<int>(bounds.getRight()-550 , bounds.getBottom()-350, 500, 300);
+    
+    g.fillRoundedRectangle(functionArea.toFloat(), 2.f);
     g.drawImageWithin(func[processor.getDistortionType()],
         functionArea.getX(),
         functionArea.getY(),
@@ -73,8 +76,9 @@ void DistFunctionComponent::paint(Graphics&g)
 void DistFunctionComponent::resized()
 {
     auto bounds = getLocalBounds();
-    func_tanh.setBounds(Rectangle<int>(bounds.getRight() - 500, bounds.getBottom() - 390, 60, 30));
-    func_soft.setBounds(Rectangle<int>(bounds.getRight() - 500, bounds.getBottom() - 340, 60, 30));
-    func_hard.setBounds(Rectangle<int>(bounds.getRight() - 500, bounds.getBottom() - 290, 60, 30));
+    func_tanh.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 110, 60, 30));
+    func_soft.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 160, 60, 30));
+    func_hard.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 210, 60, 30));
+
 }
 

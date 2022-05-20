@@ -68,7 +68,7 @@ struct AnalyzerComponent : public Timer,
 
             fifoIndex = 0;
         }
-        fifo[fifoIndex++] = sample;             
+        fifo[fifoIndex++] = sample;
     }
 
 

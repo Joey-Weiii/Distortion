@@ -29,7 +29,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void timerCallback() override;
-   void buttonClicked(Button* button) override;
+    void buttonClicked(Button* button) override;
 
 
 private:

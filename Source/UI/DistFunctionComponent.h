@@ -15,7 +15,7 @@
 
 using namespace juce;
 
-class DistFunctionComponent :public Component//, public Button::Listener
+class DistFunctionComponent :public Component
 {
 public:
     DistFunctionComponent(DistortionAudioProcessor&);
@@ -24,8 +24,9 @@ public:
    // void buttonClicked(juce::Button* ) override;
     void paint(Graphics&) override;
     void resized() override;
-    Rectangle<int>* getLabelArea();
-    Rectangle<int>  getFunctionArea();
+
+    //Rectangle<int>* getLabelArea();
+    //Rectangle<int>  getFunctionArea();
 private:
     //TextButton distortionButton;
     //ButtonLook buttonLook;

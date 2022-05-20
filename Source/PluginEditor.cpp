@@ -112,9 +112,7 @@ void DistortionAudioProcessorEditor::paint (juce::Graphics& g)
     auto buffetTimeArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom()-100 , 100, 100);
     bufferTimeLabel.setBounds (buffetTimeArea);
 
-    // distortion functions
-    auto functionArea = Rectangle<int>(bounds.getRight() - 500, bounds.getBottom() - 500, 600, 600);
-    distFunctionComponent.setBounds(functionArea);
+    
 
     // tanh_btn
     auto tanhBtnArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom() - 300, 100, 50);
@@ -128,7 +126,9 @@ void DistortionAudioProcessorEditor::paint (juce::Graphics& g)
     auto hardBtnArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom() - 200, 100, 50);
     hardButton.setBounds(hardBtnArea);
 
-
+    // distortion functions
+    auto functionArea = Rectangle<int>(bounds.getRight() - 750, bounds.getBottom() - 480, 600, 400);
+    distFunctionComponent.setBounds(functionArea);
 
 }
 
@@ -162,6 +162,7 @@ void DistortionAudioProcessorEditor::buttonClicked(Button* button)
             tanhButtonLook.setStage(1);
             softButtonLook.setStage(0);
             hardButtonLook.setStage(0);
+            processor.setDistortionType(1);
         }
         else
         {
@@ -177,6 +178,7 @@ void DistortionAudioProcessorEditor::buttonClicked(Button* button)
             tanhButtonLook.setStage(0);
             softButtonLook.setStage(1);
             hardButtonLook.setStage(0);
+            processor.setDistortionType(2);
         }
         else
         {
@@ -192,6 +194,7 @@ void DistortionAudioProcessorEditor::buttonClicked(Button* button)
             tanhButtonLook.setStage(0);
             softButtonLook.setStage(0);
             hardButtonLook.setStage(1);
+            processor.setDistortionType(3);
         }
         else
         {
@@ -201,4 +204,5 @@ void DistortionAudioProcessorEditor::buttonClicked(Button* button)
     }
     processor.updateDistortionType();
 
+    repaint();
 }
