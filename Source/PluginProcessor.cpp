@@ -87,7 +87,7 @@ void DistortionAudioProcessor::prepareToPlay (double sampleRate, int numSamples)
     
     info.numSamples = numSamples;
     info.startSample = 0;
-
+    
 
     // spec for filter
     juce::dsp::ProcessSpec spec;
@@ -177,6 +177,17 @@ void DistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 }
 
 //==============================================================================
+
+float DistortionAudioProcessor::getInputGainKnob()
+{
+    return(*inputGainParameter) ;
+}
+
+float DistortionAudioProcessor::getOutputGainKnob()
+{
+    return(*outputGainParameter);
+}
+
 
 
 float DistortionAudioProcessor::getInputGain()

@@ -7,6 +7,37 @@
       <FILE id="T9mJhL" name="btn_off.png" compile="0" resource="1" file="Image/btn_off.png"/>
       <FILE id="hFYqRB" name="btn_on.png" compile="0" resource="1" file="Image/btn_on.png"/>
       <FILE id="RAKDNJ" name="hard.png" compile="0" resource="1" file="Image/hard.png"/>
+      <FILE id="rFnaPg" name="metal_0.png" compile="0" resource="1" file="Image/knob/metal_0.png"/>
+      <FILE id="fbDxyg" name="metal_1.png" compile="0" resource="1" file="Image/knob/metal_1.png"/>
+      <FILE id="rN39K5" name="metal_2.png" compile="0" resource="1" file="Image/knob/metal_2.png"/>
+      <FILE id="g00hvE" name="metal_3.png" compile="0" resource="1" file="Image/knob/metal_3.png"/>
+      <FILE id="XiFNLo" name="metal_4.png" compile="0" resource="1" file="Image/knob/metal_4.png"/>
+      <FILE id="TyCCB7" name="metal_5.png" compile="0" resource="1" file="Image/knob/metal_5.png"/>
+      <FILE id="Tx09dP" name="metal_6.png" compile="0" resource="1" file="Image/knob/metal_6.png"/>
+      <FILE id="HaOvRE" name="metal_7.png" compile="0" resource="1" file="Image/knob/metal_7.png"/>
+      <FILE id="zcOxES" name="metal_8.png" compile="0" resource="1" file="Image/knob/metal_8.png"/>
+      <FILE id="F6NIx4" name="metal_9.png" compile="0" resource="1" file="Image/knob/metal_9.png"/>
+      <FILE id="u0eLf0" name="metal_10.png" compile="0" resource="1" file="Image/knob/metal_10.png"/>
+      <FILE id="WdRfPH" name="metal_11.png" compile="0" resource="1" file="Image/knob/metal_11.png"/>
+      <FILE id="gzuKK5" name="metal_12.png" compile="0" resource="1" file="Image/knob/metal_12.png"/>
+      <FILE id="CyQ365" name="metal_13.png" compile="0" resource="1" file="Image/knob/metal_13.png"/>
+      <FILE id="uETv9T" name="metal_14.png" compile="0" resource="1" file="Image/knob/metal_14.png"/>
+      <FILE id="ZO61MC" name="metal_15.png" compile="0" resource="1" file="Image/knob/metal_15.png"/>
+      <FILE id="AiiyZ2" name="metal_16.png" compile="0" resource="1" file="Image/knob/metal_16.png"/>
+      <FILE id="B1FFfQ" name="metal_17.png" compile="0" resource="1" file="Image/knob/metal_17.png"/>
+      <FILE id="ZOOjtP" name="metal_18.png" compile="0" resource="1" file="Image/knob/metal_18.png"/>
+      <FILE id="ldAHt4" name="metal_19.png" compile="0" resource="1" file="Image/knob/metal_19.png"/>
+      <FILE id="dFqinu" name="metal_20.png" compile="0" resource="1" file="Image/knob/metal_20.png"/>
+      <FILE id="s631EW" name="metal_21.png" compile="0" resource="1" file="Image/knob/metal_21.png"/>
+      <FILE id="nTiRWj" name="metal_22.png" compile="0" resource="1" file="Image/knob/metal_22.png"/>
+      <FILE id="hu2b2Z" name="metal_23.png" compile="0" resource="1" file="Image/knob/metal_23.png"/>
+      <FILE id="MtIvVf" name="metal_24.png" compile="0" resource="1" file="Image/knob/metal_24.png"/>
+      <FILE id="t9KN4M" name="metal_25.png" compile="0" resource="1" file="Image/knob/metal_25.png"/>
+      <FILE id="HwxwkD" name="metal_26.png" compile="0" resource="1" file="Image/knob/metal_26.png"/>
+      <FILE id="ioKSkG" name="metal_27.png" compile="0" resource="1" file="Image/knob/metal_27.png"/>
+      <FILE id="cf7VzO" name="metal_28.png" compile="0" resource="1" file="Image/knob/metal_28.png"/>
+      <FILE id="c8kqqm" name="metal_29.png" compile="0" resource="1" file="Image/knob/metal_29.png"/>
+      <FILE id="AKZLfU" name="metal_30.png" compile="0" resource="1" file="Image/knob/metal_30.png"/>
       <FILE id="dj4dnX" name="no.png" compile="0" resource="1" file="Image/no.png"/>
       <FILE id="AaUio3" name="soft.png" compile="0" resource="1" file="Image/soft.png"/>
       <FILE id="zoCHio" name="tanh.png" compile="0" resource="1" file="Image/tanh.png"/>
@@ -21,6 +52,8 @@
               file="Source/UI/DistFunctionComponent.cpp"/>
         <FILE id="xck7Ym" name="DistFunctionComponent.h" compile="0" resource="0"
               file="Source/UI/DistFunctionComponent.h"/>
+        <FILE id="I5zTic" name="KnobLook.cpp" compile="1" resource="0" file="Source/UI/KnobLook.cpp"/>
+        <FILE id="uAopOs" name="KnobLook.h" compile="0" resource="0" file="Source/UI/KnobLook.h"/>
       </GROUP>
       <FILE id="P4mcW5" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

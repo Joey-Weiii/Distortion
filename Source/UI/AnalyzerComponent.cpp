@@ -30,7 +30,7 @@ struct AnalyzerComponent : public Timer,
     {
         setOpaque(true);
         setAudioChannels(1, 1); 
-        startTimerHz(30);
+        startTimerHz(10);
     }
 
 

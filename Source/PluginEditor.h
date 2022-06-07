@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "UI/DistFunctionComponent.h"
 #include "UI/ButtonLook.h"
+#include "UI/KnobLook.h"
 #include <string>
 
 using namespace juce;
@@ -47,7 +48,9 @@ private:
     // output gain
     Slider outputGainSlider;
     Label outputGainLabel;
-
+    
+    //KnobLook
+    KnobLook inputKnobLook, outputKnobLook;
     // -- monitor -- //
     Label bufferTimeLabel;
 
@@ -61,5 +64,6 @@ private:
     std::unique_ptr<SliderAttachment> outputGainAttachment;
     
     DistFunctionComponent distFunctionComponent;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DistortionAudioProcessorEditor)
 };

@@ -11,7 +11,7 @@
 
 //==============================================================================
 DistortionAudioProcessorEditor::DistortionAudioProcessorEditor (DistortionAudioProcessor& p,  AudioProcessorValueTreeState& vts)
-    : AudioProcessorEditor (&p), processor (p), valueTreeState (vts) , distFunctionComponent(processor)
+    : AudioProcessorEditor (&p), processor (p), valueTreeState (vts) , distFunctionComponent(processor), inputKnobLook(processor), outputKnobLook(processor)
 {   
 
      // input gain
@@ -21,10 +21,14 @@ DistortionAudioProcessorEditor::DistortionAudioProcessorEditor (DistortionAudioP
     
     inputGainAttachment.reset (new SliderAttachment (
                         valueTreeState, "Input Gain", inputGainSlider));
+    inputKnobLook.set_as_in_knob();
+    inputGainSlider.setLookAndFeel(&inputKnobLook);
+
 
     addAndMakeVisible (inputGainLabel);
     inputGainLabel.setText ("Input Gain", dontSendNotification);
     inputGainLabel.setJustificationType (Justification::centred);
+
     
     // output gain
     addAndMakeVisible(outputGainSlider);
@@ -33,6 +37,8 @@ DistortionAudioProcessorEditor::DistortionAudioProcessorEditor (DistortionAudioP
     
     outputGainAttachment.reset (new SliderAttachment (
                         valueTreeState, "Output Gain", outputGainSlider));
+    outputKnobLook.set_as_out_knob();
+    outputGainSlider.setLookAndFeel(&outputKnobLook);
 
     addAndMakeVisible (outputGainLabel);
     outputGainLabel.setText ("Output Gain", dontSendNotification);
@@ -78,6 +84,8 @@ DistortionAudioProcessorEditor::~DistortionAudioProcessorEditor()
     tanhButton.setLookAndFeel(nullptr);
     softButton.setLookAndFeel(nullptr);
     hardButton.setLookAndFeel(nullptr);
+    inputGainSlider.setLookAndFeel(nullptr);
+    outputGainSlider.setLookAndFeel(nullptr);
 }
 
 //==============================================================================
@@ -98,7 +106,7 @@ void DistortionAudioProcessorEditor::paint (juce::Graphics& g)
 
     // input gain
     auto inputGainArea =  Rectangle<int>(bounds.getRight()-1000, bounds.getBottom() - 200, 100, 100);
-    auto inputLabelArea = Rectangle<int>(bounds.getRight() -1000, bounds.getBottom() -230, 80, 30);
+    auto inputLabelArea = Rectangle<int>(bounds.getRight() -1000, bounds.getBottom() -230, 100, 30);
     inputGainSlider.setBounds(inputGainArea);
     inputGainLabel.setBounds(inputLabelArea);
     
@@ -111,8 +119,6 @@ void DistortionAudioProcessorEditor::paint (juce::Graphics& g)
     // --- monitor buffer time--- //
     auto buffetTimeArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom()-100 , 100, 100);
     bufferTimeLabel.setBounds (buffetTimeArea);
-
-    
 
     // tanh_btn
     auto tanhBtnArea = Rectangle<int>(bounds.getRight() - 120, bounds.getBottom() - 300, 100, 50);

@@ -44,10 +44,6 @@ DistFunctionComponent::DistFunctionComponent(DistortionAudioProcessor& p):proces
 
 
 
-//void DistFunctionComponent::buttonClicked(juce::Button* button)
-//{
-//
-//}
 DistFunctionComponent::~DistFunctionComponent()
 {
 
@@ -76,9 +72,9 @@ void DistFunctionComponent::paint(Graphics&g)
 void DistFunctionComponent::resized()
 {
     auto bounds = getLocalBounds();
-    func_tanh.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 110, 60, 30));
+    func_tanh.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 210, 60, 30));
     func_soft.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 160, 60, 30));
-    func_hard.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 210, 60, 30));
+    func_hard.setBounds(Rectangle<int>(bounds.getRight()-50 , bounds.getBottom() - 110, 60, 30));
 
 }
 

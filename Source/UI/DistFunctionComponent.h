@@ -25,11 +25,8 @@ public:
     void paint(Graphics&) override;
     void resized() override;
 
-    //Rectangle<int>* getLabelArea();
-    //Rectangle<int>  getFunctionArea();
 private:
-    //TextButton distortionButton;
-    //ButtonLook buttonLook;
+
     Label func_no,func_tanh, func_soft, func_hard;
     DistortionAudioProcessor& processor;
     Image func[4];

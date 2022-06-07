@@ -92,7 +92,8 @@ public:
     int getDistortionType();
     void setDistortionType(int x);
     void updateDistortionType();
-
+    float getInputGainKnob();
+    float getOutputGainKnob();
 
 private:
     //==============================================================================
